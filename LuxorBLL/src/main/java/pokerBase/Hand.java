@@ -11,6 +11,7 @@ import java.util.Locale;
 
 import exceptions.DeckException;
 import exceptions.HandException;
+import exceptions.exHands;
 import pokerEnums.*;
 
 import static java.lang.System.out;
@@ -123,6 +124,12 @@ public class Hand {
 		} catch (InvocationTargetException e) {
 			e.printStackTrace();
 		}
+		return h;
+	}
+	
+	public static Hand PickBestHand(ArrayList<Hand> Hands) throws exHands {
+		// work on this method
+		Hand h = null;
 		return h;
 	}
 

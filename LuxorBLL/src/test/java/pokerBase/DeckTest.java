@@ -55,6 +55,7 @@ public class DeckTest {
 
 	/**
 	 * Test to check to see if the .draw() method actually returns a Card
+	 * 
 	 * @throws DeckException
 	 */
 	@Test
@@ -68,9 +69,10 @@ public class DeckTest {
 	}
 
 	/**
-	 * Test to check to see if an overdraw (draw more cards than in deck)
-	 * throws the right exception
-	 * @throws Exception 
+	 * Test to check to see if an overdraw (draw more cards than in deck) throws
+	 * the right exception
+	 * 
+	 * @throws Exception
 	 * @throws DeckException
 	 */
 
@@ -79,7 +81,7 @@ public class DeckTest {
 		Deck d = new Deck();
 		Card c = null;
 		for (int i = 0; i < 100; i++) {
-			c = d.Draw();		
+			c = d.Draw();
 		}
 	}
 
@@ -92,30 +94,29 @@ public class DeckTest {
 	 * 'catch' blocks are required to catch any of these generated exceptions
 	 */
 	@Test
-	public void NoramlDeckSizeTest() {
+	public void NormalDeckSizeTest() {
 		int iExpectedValue = 51;
 		int iActualValue;
 
 		try {
-			//	Load the Class into 'c'
+			// Load the Class into 'c'
 			Class<?> c = Class.forName("pokerBase.Deck");
-			//	Create a new instance 't' from the no-arg Deck constructor
+			// Create a new instance 't' from the no-arg Deck constructor
 			Object t = c.newInstance();
-			//	Load 'mDraw' with the 'Draw' method (no args);
+			// Load 'mDraw' with the 'Draw' method (no args);
 			Method mDraw = c.getDeclaredMethod("Draw", null);
-			//	Load 'mGetDeckSize' with the 'GetDeckSize' method
+			// Load 'mGetDeckSize' with the 'GetDeckSize' method
 			Method mGetDeckSize = c.getDeclaredMethod("GetDeckSize", null);
-			//	Change the visibilty of 'GetDeckSize' to true *Good Grief!*
+			// Change the visibilty of 'GetDeckSize' to true *Good Grief!*
 			mGetDeckSize.setAccessible(true);
 
-			//	invoke 'Draw'
+			// invoke 'Draw'
 			Object oDraw = mDraw.invoke(t, null);
-			
-			//	invoke 'GetDeckSize'
+
+			// invoke 'GetDeckSize'
 			Object oGetDeckSize = mGetDeckSize.invoke(t, null);
 
 			iActualValue = ((Integer) oGetDeckSize).intValue();
-
 			assertEquals(iExpectedValue, iActualValue);
 		} catch (ClassNotFoundException x) {
 			x.printStackTrace();
@@ -133,22 +134,8 @@ public class DeckTest {
 			e.printStackTrace();
 		}
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
+	@Test
 	public void OneJokerDeckSizeTest() {
 		int iNbrOfJokers = 1;
 		int iExpectedValue = 52;
@@ -184,5 +171,6 @@ public class DeckTest {
 		} catch (InvocationTargetException e) {
 			e.printStackTrace();
 		}
-	}	
+	}
+
 }
