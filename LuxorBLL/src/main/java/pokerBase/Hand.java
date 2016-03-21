@@ -80,9 +80,9 @@ public class Hand {
 	 */
 	public static Hand EvaluateHand(Hand h) throws HandException {
 
-		Collections.sort(h.getCardsInHand());
+		// Collections.sort(h.getCardsInHand());
 
-		// Collections.sort(h.getCardsInHand(), Card.CardRank);
+		Collections.sort(h.getCardsInHand(), Card.CardRank);
 
 		if (h.getCardsInHand().size() != 5) {
 			throw new HandException(h);
@@ -130,6 +130,12 @@ public class Hand {
 	public static Hand PickBestHand(ArrayList<Hand> Hands) throws exHands {
 		// work on this method
 		Hand h = null;
+		int highestHandStrength = 0;
+		for (Hand hand : Hands) {
+			if (hand.getHandScore().getHandStrength() > highestHandStrength) {
+				h = hand;
+			} 
+		}		
 		return h;
 	}
 

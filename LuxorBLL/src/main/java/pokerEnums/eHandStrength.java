@@ -3,7 +3,6 @@ package pokerEnums;
 public enum eHandStrength {
 
 	FiveOfAKind(110, "isHandFiveOfAKind") {
-		@Override
 		public String toString() {
 			return "Five of a Kind";
 		}
