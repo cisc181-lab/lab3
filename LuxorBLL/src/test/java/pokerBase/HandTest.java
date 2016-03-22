@@ -1,5 +1,8 @@
 package pokerBase;
 
+/**
+ * Charles Cheung, Adam Caulfield, Morgan Sanchez, Khalid Al-Sarhan
+ */
 import static org.junit.Assert.*;
 
 import java.lang.reflect.InvocationTargetException;
@@ -899,27 +902,56 @@ public class HandTest {
 	}
 
 	@Test
-	public void TestRoyalFlush() {
+	public void TestNaturalRoyalFlush() {
 
 		HandScore hs = new HandScore();
-		ArrayList<Card> RoyalFlush = new ArrayList<Card>();
-		RoyalFlush.add(new Card(eSuit.CLUBS, eRank.TEN, 0));
-		RoyalFlush.add(new Card(eSuit.CLUBS, eRank.JACK, 0));
-		RoyalFlush.add(new Card(eSuit.CLUBS, eRank.QUEEN, 0));
-		RoyalFlush.add(new Card(eSuit.CLUBS, eRank.KING, 0));
-		RoyalFlush.add(new Card(eSuit.CLUBS, eRank.ACE, 0));
-		Collections.sort(RoyalFlush);
+		ArrayList<Card> NaturalRoyalFlush = new ArrayList<Card>();
+		NaturalRoyalFlush.add(new Card(eSuit.CLUBS, eRank.TEN, 0));
+		NaturalRoyalFlush.add(new Card(eSuit.CLUBS, eRank.JACK, 0));
+		NaturalRoyalFlush.add(new Card(eSuit.CLUBS, eRank.QUEEN, 0));
+		NaturalRoyalFlush.add(new Card(eSuit.CLUBS, eRank.KING, 0));
+		NaturalRoyalFlush.add(new Card(eSuit.CLUBS, eRank.ACE, 0));
+		Collections.sort(NaturalRoyalFlush);
 		Hand h = new Hand();
-		h = SetHand(RoyalFlush, h);
+		h = SetHand(NaturalRoyalFlush, h);
 
-		boolean bActualIsRoyalFlush = Hand.isHandRoyalFlush(h, hs);
-		boolean bExpectedIsRoyalFlush = true;
+		boolean bActualIsNaturalRoyalFlush = Hand.isHandNaturalRoyalFlush(h, hs);
+		boolean bExpectedIsNaturalRoyalFlush = true;
 
-		assertEquals(bExpectedIsRoyalFlush, bActualIsRoyalFlush);
+		assertEquals(bExpectedIsNaturalRoyalFlush, bActualIsNaturalRoyalFlush);
 
 		assertEquals(hs.getHiHand(), eRank.ACE.getiRankNbr());
 	}
 
+
+	@Test
+	public void TestNaturalRoyalFlushEval() {
+
+		HandScore hs = new HandScore();
+		ArrayList<Card> NaturalRoyalFlush = new ArrayList<Card>();
+		NaturalRoyalFlush.add(new Card(eSuit.CLUBS, eRank.TEN, 0));
+		NaturalRoyalFlush.add(new Card(eSuit.CLUBS, eRank.JACK, 0));
+		NaturalRoyalFlush.add(new Card(eSuit.CLUBS, eRank.QUEEN, 0));
+		NaturalRoyalFlush.add(new Card(eSuit.CLUBS, eRank.KING, 0));
+		NaturalRoyalFlush.add(new Card(eSuit.CLUBS, eRank.ACE, 0));
+		Collections.sort(NaturalRoyalFlush);
+		Hand h = new Hand();
+		h = SetHand(NaturalRoyalFlush, h);
+
+		try {
+			h = Hand.EvaluateHand(h);
+		} catch (HandException e) {
+			e.printStackTrace();
+			fail("TestStraightEval failed");
+		}
+
+		int iActualIsHandNaturalRoyalFlush = h.getHandScore().getHandStrength();
+		int iExpectedIsHandNaturalRoyalFlush = eHandStrength.RoyalFlush.getHandStrength();
+
+		assertEquals(iActualIsHandNaturalRoyalFlush, iExpectedIsHandNaturalRoyalFlush);
+		assertEquals(h.getHandScore().getHiHand(), eRank.ACE.getiRankNbr());
+	}
+	
 	@Test
 	public void TestRoyalFlushEval() {
 
@@ -945,9 +977,30 @@ public class HandTest {
 		int iExpectedIsHandRoyalFlush = eHandStrength.RoyalFlush.getHandStrength();
 
 		assertEquals(iActualIsHandRoyalFlush, iExpectedIsHandRoyalFlush);
-		assertEquals(h.getHandScore().getHiHand(), eRank.ACE.getiRankNbr());
-	}
+		assertEquals(h.getHandScore().getHiHand(), eRank.ACE.getiRankNbr());}
+	
+	@Test
+	public void TestUnnaturalRoyalFlush() {
 
+		
+		HandScore hs = new HandScore();
+		ArrayList<Card> RoyalFlush = new ArrayList<Card>();
+		RoyalFlush.add(new Card(eSuit.CLUBS, eRank.JOKER, 0));
+		RoyalFlush.add(new Card(eSuit.CLUBS, eRank.JACK, 0));
+		RoyalFlush.add(new Card(eSuit.CLUBS, eRank.QUEEN, 0));
+		RoyalFlush.add(new Card(eSuit.CLUBS, eRank.KING, 0));
+		RoyalFlush.add(new Card(eSuit.CLUBS, eRank.ACE, 0));
+		Collections.sort(RoyalFlush);
+		Hand h = new Hand();
+		h = SetHand(RoyalFlush, h);
+		
+		boolean bIsNaturalRF = !(Hand.existsJokersOrWilds(h));
+
+		boolean bExpectedIsNaturalRF = false;
+
+		assertEquals(bExpectedIsNaturalRF, bIsNaturalRF);
+	}
+	
 	@Test
 	public void TestStraightFlush() {
 

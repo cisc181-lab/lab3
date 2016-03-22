@@ -1,5 +1,8 @@
 package pokerBase;
 
+/**
+ * Charles Cheung, Adam Caulfield, Morgan Sanchez, Khalid Al-Sarhan
+ */
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -127,6 +130,23 @@ public class Hand {
 		return h;
 	}
 
+	public static boolean existsJokersOrWilds(Hand h) {
+		int iNbrOfJokers = 0;
+		int iNbrOfWilds = 0;
+		boolean exists = false;
+		for (Card card : h.getCardsInHand()) {
+			if (card.geteRank() == eRank.JOKER) {
+				iNbrOfJokers++;
+			} else if (card.geteRank() == eRank.WILDS) {
+				iNbrOfWilds++;
+			}
+		}
+		if (iNbrOfJokers + iNbrOfWilds > 0) {
+			exists = true;
+		}
+		return exists;
+	}
+	
 	public static Hand PickBestHand(ArrayList<Hand> Hands) throws exHands {
 		Collections.sort(Hands, HandRank);
 		Hand h = null;
@@ -228,7 +248,42 @@ public class Hand {
 
 		Card c = new Card();
 		boolean isRoyalFlush = false;
+		int iCardsInHand = 5;
+		int iNbrOfJokers = 0;
+		int iNbrOfWilds = 0;
+		
+		for(Card card: h.CardsInHand){
+			if(card.geteRank()==eRank.JOKER){
+				iNbrOfJokers++;
+			}
+			else if(card.geteRank()==eRank.WILDS){
+
+				iNbrOfWilds++;
+			}
+		}
+		
+		int iNbrUnnaturalCards = iNbrOfJokers+iNbrOfWilds; 
+			
 		if ((isHandFlush(h.getCardsInHand())) && (isStraight(h.getCardsInHand(), c))) {
+			if (c.geteRank() == eRank.ACE) {
+				isRoyalFlush = true;
+				hs.setHandStrength(eHandStrength.RoyalFlush.getHandStrength()-iNbrUnnaturalCards);
+				hs.setHiHand(h.getCardsInHand().get(eCardNo.FirstCard.getCardNo()).geteRank().getiRankNbr());
+				hs.setLoHand(0);
+			}
+ 
+		}
+
+		return isRoyalFlush;
+	}
+
+	
+	public static boolean isHandNaturalRoyalFlush(Hand h, HandScore hs) {
+
+		Card c = new Card();
+		boolean isRoyalFlush = false;
+	
+		if ((existsJokersOrWilds(h) == false) && (isHandFlush(h.getCardsInHand())) && (isStraight(h.getCardsInHand(), c))) {
 			if (c.geteRank() == eRank.ACE) {
 				isRoyalFlush = true;
 				hs.setHandStrength(eHandStrength.RoyalFlush.getHandStrength());
@@ -239,23 +294,6 @@ public class Hand {
 		}
 
 		return isRoyalFlush;
-	}
-
-	public static boolean isHandNaturalRoyalFlush(Hand h, HandScore hs) {
-		boolean isNaturalRoyalFlush = false;
-
-		if (h.getCardsInHand().get(eCardNo.FirstCard.getCardNo()).geteRank() != eRank.JOKER
-				&& h.getCardsInHand().get(eCardNo.SecondCard.getCardNo()).geteRank() != eRank.JOKER
-				&& h.getCardsInHand().get(eCardNo.ThirdCard.getCardNo()).geteRank() != eRank.JOKER
-				&& h.getCardsInHand().get(eCardNo.FourthCard.getCardNo()).geteRank() != eRank.JOKER
-				&& h.getCardsInHand().get(eCardNo.FifthCard.getCardNo()).geteRank() != eRank.JOKER) {
-
-			isNaturalRoyalFlush = true;
-			hs.setHandStrength(eHandStrength.RoyalFlush.getHandStrength());
-			hs.setHiHand(h.getCardsInHand().get(eCardNo.FirstCard.getCardNo()).geteRank().getiRankNbr());
-			hs.setLoHand(0);
-		}
-		return isNaturalRoyalFlush;
 	}
 
 	public static boolean isHandStraightFlush(Hand h, HandScore hs) {
