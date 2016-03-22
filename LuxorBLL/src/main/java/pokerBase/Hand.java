@@ -126,16 +126,19 @@ public class Hand {
 		}
 		return h;
 	}
-	
+
 	public static Hand PickBestHand(ArrayList<Hand> Hands) throws exHands {
-		// work on this method
+		Collections.sort(Hands, HandRank);
 		Hand h = null;
 		int highestHandStrength = 0;
 		for (Hand hand : Hands) {
-			if (hand.getHandScore().getHandStrength() > highestHandStrength) {
+			if (hand.getHandScore().getHandStrength() == highestHandStrength) {
+				throw new exHands();
+			} else {
+				highestHandStrength = hand.getHandScore().getHandStrength();
 				h = hand;
-			} 
-		}		
+			}
+		}
 		return h;
 	}
 
@@ -234,6 +237,23 @@ public class Hand {
 		}
 
 		return isRoyalFlush;
+	}
+
+	public static boolean isHandNaturalRoyalFlush(Hand h, HandScore hs) {
+		boolean isNaturalRoyalFlush = false;
+
+		if (h.getCardsInHand().get(eCardNo.FirstCard.getCardNo()).geteRank() != eRank.JOKER
+				&& h.getCardsInHand().get(eCardNo.SecondCard.getCardNo()).geteRank() != eRank.JOKER
+				&& h.getCardsInHand().get(eCardNo.ThirdCard.getCardNo()).geteRank() != eRank.JOKER
+				&& h.getCardsInHand().get(eCardNo.FourthCard.getCardNo()).geteRank() != eRank.JOKER
+				&& h.getCardsInHand().get(eCardNo.FifthCard.getCardNo()).geteRank() != eRank.JOKER) {
+
+			isNaturalRoyalFlush = true;
+			hs.setHandStrength(eHandStrength.RoyalFlush.getHandStrength());
+			hs.setHiHand(h.getCardsInHand().get(eCardNo.FirstCard.getCardNo()).geteRank().getiRankNbr());
+			hs.setLoHand(0);
+		}
+		return isNaturalRoyalFlush;
 	}
 
 	public static boolean isHandStraightFlush(Hand h, HandScore hs) {
