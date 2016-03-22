@@ -1351,13 +1351,13 @@ public class HandTest {
 
 		try {
 			bestHand = Hand.PickBestHand(hands);
+
 		} catch (exHands e) {
 			actualCaughtException = true;
 		}
-		System.out.println(h1.getHandScore().getHandStrength());
-		System.out.println(h2.getHandScore().getHandStrength());
+
 		assertEquals(actualCaughtException, false);
-		assertEquals(bestHand, h1);
+		assertEquals(bestHand,h2);
 
 	}
 }

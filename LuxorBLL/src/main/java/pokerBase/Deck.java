@@ -20,6 +20,10 @@ public class Deck {
 	 */
 	private ArrayList<Card> deckCards = new ArrayList<Card>();
 
+	public ArrayList<Card> getDeckCards() {
+		return deckCards;
+	}
+
 	/**
 	 * No arg constructor for deck, will return shuffled deck of 52 cards
 	 */
@@ -46,10 +50,10 @@ public class Deck {
 
 	public Deck(int NbrOfJokers, ArrayList<Card> wilds) {
 		this(NbrOfJokers);
-		for (int i = 0; i <= wilds.size(); i++) {
+		for (int i = 0; i < wilds.size(); i++) {
 			for (Card card : deckCards) {
 				if (card.geteRank() == wilds.get(i).geteRank()) {
-					card.seteRank(wilds.get(i).geteRank());
+					card.seteRank(eRank.WILDS);
 				}
 			}
 		}
@@ -74,7 +78,7 @@ public class Deck {
 	 * 
 	 * @return
 	 */
-	private int GetDeckSize() {
+	public int GetDeckSize() {
 		return deckCards.size();
 	}
 }

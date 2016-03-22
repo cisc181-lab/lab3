@@ -1,20 +1,22 @@
 package exceptions;
 
+import java.util.ArrayList;
+
 import pokerBase.Deck;
 import pokerBase.Hand;
 
 
 public class exHands extends Exception {
 
-	private Hand h;
+	private ArrayList<Hand> hands;
 
-	public exHands(Hand h) {
+	public exHands(ArrayList<Hand> hands) {
 		super();
-		this.h = h;
+		this.hands = hands;
 	}
 
-	public Hand getH() {
-		return h;
+	public ArrayList<Hand> getH() {
+		return hands;
 	}
 	
 	

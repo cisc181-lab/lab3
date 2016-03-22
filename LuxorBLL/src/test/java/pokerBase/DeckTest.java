@@ -8,6 +8,7 @@ import static org.junit.Assert.*;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -18,6 +19,8 @@ import org.junit.Test;
 import exceptions.DeckException;
 import exceptions.HandException;
 import pokerEnums.eHandStrength;
+import pokerEnums.eRank;
+import pokerEnums.eSuit;
 
 /**
  * @author Bert.Gibbons
@@ -156,6 +159,64 @@ public class DeckTest {
 			iActualValue = ((Integer) oGetDeckSize).intValue();
 
 			assertEquals(iExpectedValue, iActualValue);
+		} catch (ClassNotFoundException x) {
+			x.printStackTrace();
+		} catch (SecurityException e) {
+			e.printStackTrace();
+		} catch (IllegalArgumentException e) {
+			e.printStackTrace();
+		} catch (InstantiationException e) {
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		} catch (NoSuchMethodException e) {
+			e.printStackTrace();
+		} catch (InvocationTargetException e) {
+			e.printStackTrace();
+		}
+	}
+
+	@Test
+	public void OneJokerWithWildsDeckTest() {
+		int iNbrOfJokers = 1;
+		ArrayList<Card> wilds = new ArrayList<Card>();
+		wilds.add(new Card(eSuit.DIAMONDS,eRank.TWO,0));
+		wilds.add(new Card(eSuit.HEARTS,eRank.TWO,0));
+		wilds.add(new Card(eSuit.CLUBS,eRank.TWO,0));
+		wilds.add(new Card(eSuit.SPADES,eRank.TWO,0));
+		boolean bNoTwosInDeck = false;
+		int iExpectedValue = 52;
+		int iActualValue;
+
+		try {
+			Class<?> c = Class.forName("pokerBase.Deck");
+			Constructor<?> cons = c.getConstructor(int.class, ArrayList.class);
+			Object t = cons.newInstance(iNbrOfJokers, wilds);
+
+			Method mDraw = c.getDeclaredMethod("Draw", null);
+			Method mGetDeckSize = c.getDeclaredMethod("GetDeckSize", null);
+			Method mGetDeckCards = c.getDeclaredMethod("getDeckCards", null);
+			mGetDeckCards.setAccessible(true);
+			mGetDeckSize.setAccessible(true);
+
+			Object oDraw = mDraw.invoke(t, null);
+			Object oGetDeckSize = mGetDeckSize.invoke(t, null);
+			Object oGetDeck = mGetDeckCards.invoke(t, null);
+
+			iActualValue = ((Integer) oGetDeckSize).intValue();
+
+			assertEquals(iExpectedValue, iActualValue);
+			
+			Deck testDeck = (Deck) t;
+			for(int i = 0; i < iActualValue; i++){
+				if(testDeck.getDeckCards().get(i).geteRank().getiRankNbr() == eRank.TWO.getiRankNbr()){
+					bNoTwosInDeck = true;
+				}
+				
+			}
+			
+			assertFalse(bNoTwosInDeck);
+			
 		} catch (ClassNotFoundException x) {
 			x.printStackTrace();
 		} catch (SecurityException e) {

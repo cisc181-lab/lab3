@@ -130,14 +130,16 @@ public class Hand {
 	public static Hand PickBestHand(ArrayList<Hand> Hands) throws exHands {
 		Collections.sort(Hands, HandRank);
 		Hand h = null;
-		int highestHandStrength = 0;
+		ArrayList<Hand> bestHands = new ArrayList<Hand>();
+		int highestHandStrength = Hands.get(0).getHandScore().getHandStrength();
 		for (Hand hand : Hands) {
-			if (hand.getHandScore().getHandStrength() == highestHandStrength) {
-				throw new exHands(hand);
-			} else {
-				highestHandStrength = hand.getHandScore().getHandStrength();
-				h = hand;
-			}
+			if (hand.getHandScore().getHandStrength() == highestHandStrength)
+				bestHands.add(hand);
+		}
+		if (bestHands.size() > 1) {
+			throw new exHands(bestHands);
+		} else {
+			h = bestHands.get(0);
 		}
 		return h;
 	}
