@@ -1,9 +1,22 @@
 package exceptions;
 
 import pokerBase.Deck;
+import pokerBase.Hand;
 
 
 public class exHands extends Exception {
-	// work on this
+
+	private Hand h;
+
+	public exHands(Hand h) {
+		super();
+		this.h = h;
+	}
+
+	public Hand getH() {
+		return h;
+	}
+	
+	
 	
 }

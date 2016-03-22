@@ -133,7 +133,7 @@ public class Hand {
 		int highestHandStrength = 0;
 		for (Hand hand : Hands) {
 			if (hand.getHandScore().getHandStrength() == highestHandStrength) {
-				throw new exHands();
+				throw new exHands(hand);
 			} else {
 				highestHandStrength = hand.getHandScore().getHandStrength();
 				h = hand;
